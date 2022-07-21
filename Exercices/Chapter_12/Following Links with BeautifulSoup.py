@@ -1,5 +1,5 @@
 from urllib.request import urlopen
-from bs4 import BeautifulSoup
+import urllib.request
 import ssl
 
 
@@ -8,25 +8,15 @@ ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-sample = "http://py4e-data.dr-chuck.net/known_by_Fikret.html"
-actual = "http://py4e-data.dr-chuck.net/known_by_Aimie.html"
-position, procss = None, None
-url = input("Enter the url :")
-if len(url) == 0 :
-    url = sample
-    position, procss = 3, 4
-elif url == '3' :
-    url = actual
-    position, procss = 18, 7
+url = 'https://www.py4e.com/code3/mbox.txt?PHPSESSID=123447cb493a95f5ec285bfe56186dab'
 
+dct = dict()
+fhandler = urllib.request.urlopen(url, context=ctx)
 
-for item in range(procss):
-    soup = BeautifulSoup(urlopen(url, context=ctx).read(), "html.parser")    
-    a = soup('a')
-    if item == procss - 1 :
-        print(a[position - 1].text)
-        break
-    
-    url = a[position - 1].get("href", None)
-    print(url)
-    
+for line in fhandler :
+    if line.startswith('From ') :
+        line = line.strip()
+        email = line.split(' ')[1]
+        dct['org'] = dct.get(email, 0) + 1
+        
+print(dct)
