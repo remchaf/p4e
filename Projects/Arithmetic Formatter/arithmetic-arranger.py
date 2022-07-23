@@ -16,7 +16,7 @@ def arithmetic_arranger(problems, answer=False):
         [n1, op, n2] = operation.split(' ')
 
         if re.search('[^\+\-]', op):
-            return "Error: Operator  must be '+' or '-' ."
+            return "Error: Operator must be '+' or '-'."
         elif re.search('[^0-9]', n1) or re.search('[^0-9]', n2):
             return 'Error: Numbers must only contain digits.'
         elif len(n1) > 4 or len(n2) > 4:
@@ -29,7 +29,7 @@ def arithmetic_arranger(problems, answer=False):
         if answer:
             result = None
             if op == '+':
-                result = int(n2) + int(n2)
+                result = int(n1) + int(n2)
             else:
                 result = int(n1) - int(n2)
             result = str(result)
@@ -41,13 +41,15 @@ def arithmetic_arranger(problems, answer=False):
             continue
 
         for i in range(len(arranged_problems)):
-            arranged_problems[i] += '   ' + arranged_operation[i]
+            arranged_problems[i] += '    ' + arranged_operation[i]
     string = ''
     for i in arranged_problems :
-        string += i + '\n'
+        string += i
+        if i != arranged_problems[-1] :
+            string += '\n'
 
     return string
 
 
 print(arithmetic_arranger(
-    ["32 + 8", "1 - 3801", "9999 + 9999", "523 - 49"], True))
+    ['32 - 698', '1 - 3801', '45 + 43', '123 + 49', '988 + 40'], True))
